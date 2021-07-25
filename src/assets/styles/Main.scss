@@ -1,0 +1,18 @@
+@import './mixins.scss';
+@import './variables.scss';
+@import './globals.scss';
+
+// Pages
+@import '../../pages/Layout/Layout.scss';
+@import '../../pages/Home/Home.scss';
+@import '../../pages/Login/Login.scss';
+@import '../../pages/Leaderboard/Leaderboard.scss';
+@import '../../pages/NewQuestion/NewQuestion.scss';
+@import '../../pages/Question/Question.scss';
+@import '../../pages/NotFound/NotFound.scss';
+@import '../../pages/QuestionResult/QuestionResult.scss';
+
+// Components
+@import '../../components/Menu/Menu.scss';
+@import '../../components/QuestionHome/QuestionHome.scss';
+@import '../../components/CardBoxContainer/CardBoxContainer.scss';

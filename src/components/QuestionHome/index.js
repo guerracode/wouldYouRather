@@ -2,7 +2,7 @@ import React from 'react';
 
 import profileImage from '../../assets/img/profileImage.jpeg';
 
-const QuestionHome = () => (
+const QuestionHome = ({ onClick }) => (
    <article className="questionHome">
       <div className="questionHome__wrapper">
          <div className="questionHome__wrapper-header">
@@ -26,7 +26,9 @@ const QuestionHome = () => (
             </div>
          </div>
       </div>
-      <button className="questionHome__button">View Poll</button>
+      <button onClick={onClick} className="questionHome__button">
+         View Poll
+      </button>
    </article>
 );
 

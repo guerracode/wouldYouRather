@@ -1,0 +1,66 @@
+.newQuestion {
+   &__header {
+      font-size: 24px;
+      color: $white;
+   }
+   &__content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+      padding: 20px 80px;
+      color: $white;
+      text-align: left;
+
+      h5 {
+         width: 100%;
+         font-size: 24px;
+      }
+      p {
+         width: 100%;
+         font-size: 18px;
+      }
+
+      .inputs {
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         width: 100%;
+         gap: 10px;
+         flex-direction: column;
+
+         input {
+            width: 100%;
+            height: 53px;
+            font-size: 18px;
+            background-color: transparent;
+            border-radius: 30px;
+            border: 1px solid $white;
+            outline: none;
+            padding: 0 20px;
+            color: $white;
+
+            &::placeholder {
+               color: $white;
+               opacity: 0.7;
+            }
+         }
+
+         div {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 60px 1fr;
+            align-items: center;
+            div {
+               flex-grow: 1;
+               height: 1px;
+               background-color: $white;
+            }
+            p {
+               margin: 0 20px;
+            }
+         }
+      }
+   }
+}

@@ -1,28 +1,26 @@
 import React from 'react';
 
-import profileImage from '../../assets/img/profileImage.jpeg';
-
-const QuestionHome = ({ onClick }) => (
+const QuestionHome = ({ onClick, data, users }) => (
    <article className="questionHome">
       <div className="questionHome__wrapper">
          <div className="questionHome__wrapper-header">
-            <h6>Luis Chavez Asks:</h6>
+            <h6>{users[data.author].name} Asks:</h6>
          </div>
          <div className="questionHome__wrapper-content">
             <div className="image">
                <figure>
-                  <img src={profileImage} alt="person" />
+                  <img src={users[data.author].avatarURL} alt="person" />
                </figure>
             </div>
             <div className="text">
                <h5>Would you rather</h5>
-               <p>Be Tall ...</p>
+               <p>{data.optionOne.text}</p>
                <div>
                   <div />
                   <p>or</p>
                   <div />
                </div>
-               <p>Be Small ...</p>
+               <p>{data.optionTwo.text}</p>
             </div>
          </div>
       </div>

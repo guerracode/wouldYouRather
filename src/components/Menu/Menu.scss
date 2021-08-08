@@ -56,6 +56,11 @@
             outline: none;
             border: none;
             background-color: transparent;
+            cursor: pointer;
+
+            &:hover {
+               opacity: 0.7;
+            }
          }
          .user {
             height: 100%;

@@ -1,14 +1,25 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { handleAuthedUser } from '../../actions/authedUser';
 import Menu from '../../components/Menu';
 
-const Layout = ({ children }, props) => {
-   console.log('Layout Pathname:: ', props);
+const Layout = ({ children, authedUser, dispatch }) => {
+   const handleLogout = () => {
+      dispatch(handleAuthedUser());
+   };
+
    return (
       <div className="layout">
-         <Menu />
+         <Menu authedUser={authedUser} handleLogout={handleLogout} />
          {children}
       </div>
    );
 };
 
-export default Layout;
+function mapStateToProps({ authedUser }) {
+   return {
+      authedUser,
+   };
+}
+
+export default connect(mapStateToProps)(Layout);

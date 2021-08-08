@@ -2,9 +2,8 @@ import React from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
 
 import logo from '../../assets/img/Logo.svg';
-import profileImage from '../../assets/img/profileImage.jpeg';
 
-const Menu = () => {
+const Menu = ({ authedUser, handleLogout }) => {
    const home = useRouteMatch('/');
    const newQuestion = useRouteMatch('/newQuestion');
    const leaderboard = useRouteMatch('/leaderboard');
@@ -33,15 +32,17 @@ const Menu = () => {
                   Leaderboard
                </Link>
             </div>
-            <div className="links">
-               <button>Logout</button>
-               <div className="user">
-                  <figure>
-                     <img src={profileImage} alt="profile" />
-                  </figure>
-                  <p>Luis Chavez</p>
+            {authedUser && (
+               <div className="links">
+                  <button onClick={handleLogout}>Logout</button>
+                  <div className="user">
+                     <figure>
+                        <img src={authedUser.avatarURL} alt="profile" />
+                     </figure>
+                     <p>{authedUser.name}</p>
+                  </div>
                </div>
-            </div>
+            )}
          </nav>
       </header>
    );

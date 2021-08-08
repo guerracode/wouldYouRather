@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import QuestionHome from '../../components/QuestionHome';
 
 class Home extends Component {
@@ -39,12 +40,24 @@ class Home extends Component {
                </div>
                <div className="content">
                   {this.state.answeredSection ? (
-                     <h1>Unanswered</h1>
+                     <>
+                        {this.props.answeredQuestions.map((question) => (
+                           <QuestionHome
+                              key={question.id}
+                              data={question}
+                              users={this.props.users}
+                           />
+                        ))}
+                     </>
                   ) : (
                      <>
-                        <QuestionHome />
-                        <QuestionHome />
-                        <QuestionHome />
+                        {this.props.unansweredQuestions.map((question) => (
+                           <QuestionHome
+                              key={question.id}
+                              data={question}
+                              users={this.props.users}
+                           />
+                        ))}
                      </>
                   )}
                </div>
@@ -54,4 +67,33 @@ class Home extends Component {
    }
 }
 
-export default Home;
+function mapStateToProps({ authedUser, questions, users }) {
+   const answeredQuestions = Object.values(questions)
+      .filter(
+         (question) =>
+            question.optionOne.votes.includes(authedUser.id) ||
+            question.optionTwo.votes.includes(authedUser.id)
+      )
+      .sort(function (x, y) {
+         return y.timestamp - x.timestamp;
+      });
+   const unansweredQuestions = Object.values(questions)
+      .filter(
+         (question) =>
+            !question.optionOne.votes.includes(authedUser.id) &&
+            !question.optionTwo.votes.includes(authedUser.id)
+      )
+      .sort(function (x, y) {
+         return y.timestamp - x.timestamp;
+      });
+
+   console.log('---answeredQuestions', answeredQuestions);
+   return {
+      authedUser,
+      answeredQuestions,
+      unansweredQuestions,
+      users,
+   };
+}
+
+export default connect(mapStateToProps)(Home);

@@ -11,25 +11,24 @@ import Leaderboard from '../pages/Leaderboard';
 import NewQuestion from '../pages/NewQuestion';
 import NotFound from '../pages/NotFound';
 import Question from '../pages/Question';
-import QuestionResult from '../pages/QuestionResult';
 
 class App extends Component {
    componentDidMount() {
       this.props.dispatch(handleInitialData());
    }
 
-   PrivateRoute = ({ children, ...rest }) => {
+   PrivateRoute = ({ component: Component, ...rest }) => {
       return (
          <Route
             {...rest}
-            render={({ location }) => {
+            render={(props) => {
                return this.props.authedUser ? (
-                  children
+                  <Component {...props} />
                ) : (
                   <Redirect
                      to={{
                         pathname: '/login',
-                        state: { from: location },
+                        state: { from: props.location },
                      }}
                   />
                );
@@ -46,21 +45,23 @@ class App extends Component {
                {this.props.loading === true ? null : (
                   <Switch>
                      <Route path="/login" exact component={Login} />
-                     <this.PrivateRoute path="/" exact>
-                        <Home />
-                     </this.PrivateRoute>
-                     <this.PrivateRoute path="/leaderboard" exact>
-                        <Leaderboard />
-                     </this.PrivateRoute>
-                     <this.PrivateRoute path="/newQuestion" exact>
-                        <NewQuestion />
-                     </this.PrivateRoute>
-                     <this.PrivateRoute path="/question" exact>
-                        <Question />
-                     </this.PrivateRoute>
-                     <this.PrivateRoute path="/questionResult" exact>
-                        <QuestionResult />
-                     </this.PrivateRoute>
+                     <this.PrivateRoute path="/" exact component={Home} />
+                     <this.PrivateRoute
+                        path="/leaderboard"
+                        exact
+                        component={Leaderboard}
+                     />
+
+                     <this.PrivateRoute
+                        path="/add"
+                        exact
+                        component={NewQuestion}
+                     />
+                     <this.PrivateRoute
+                        path="/questions/:question_id"
+                        exact
+                        component={Question}
+                     />
                      <Route component={NotFound} />
                   </Switch>
                )}
@@ -70,9 +71,9 @@ class App extends Component {
    }
 }
 
-function mapStateToProps({ users, authedUser }) {
+function mapStateToProps({ authedUser, questions }) {
    return {
-      loading: Object.keys(users).length === 0,
+      loading: Object.keys(questions).length === 0,
       authedUser,
    };
 }

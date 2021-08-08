@@ -2,7 +2,8 @@ let users = {
    sarahedo: {
       id: 'sarahedo',
       name: 'Sarah Edo',
-      avatarURL: 'https://res.cloudinary.com/guerracode/image/upload/v1627782420/sarahedo_pexnzf.jpg',
+      avatarURL:
+         'https://res.cloudinary.com/guerracode/image/upload/v1627782420/sarahedo_pexnzf.jpg',
       answers: {
          '8xf0y6ziyjabvozdd253nd': 'optionOne',
          '6ni6ok3ym7mf1p33lnez': 'optionTwo',
@@ -173,7 +174,7 @@ export function _saveQuestion(question) {
             },
          };
 
-         res(formattedQuestion);
+         res({ question: formattedQuestion, users });
       }, 1000);
    });
 }
@@ -203,7 +204,7 @@ export function _saveQuestionAnswer({ authedUser, qid, answer }) {
             },
          };
 
-         res();
+         res({ questions, users });
       }, 500);
    });
 }

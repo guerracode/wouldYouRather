@@ -1,41 +1,109 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { handleSaveQuestionAnswer } from '../../actions/questions';
 import CardBoxContainer from '../../components/CardBoxContainer';
 import QuestionSelectionBox from '../../components/QuestionSelectionBox';
-
-import profileImage from '../../assets/img/profileImage.jpeg';
+import QuestionResultBox from '../../components/QuestionResultBox';
 
 class Question extends Component {
-   headerSection = () => (
+   state = {
+      answerSelected: 0,
+   };
+
+   headerSection = ({ avatarURL, name }) => (
       <div className="question__header">
          <figure>
-            <img src={profileImage} alt="profile" />
+            <img src={avatarURL} alt="profile" />
          </figure>
          <div>
             <h6>Asked by</h6>
-            <p>Luis Chavez</p>
+            <p>{name}</p>
          </div>
       </div>
    );
 
+   handleSelectAnswer = (selected) => {
+      this.setState({
+         answerSelected: selected,
+      });
+   };
+
+   handleSubmitAnswer = (qid) => {
+      this.props.dispatch(
+         handleSaveQuestionAnswer(qid, this.state.answerSelected)
+      );
+   };
+
    render() {
-      return (
+      const { question_id } = this.props.match.params;
+      const { authedUser, questions, users } = this.props;
+
+      const questionSelected = questions[question_id];
+      const totalVotes =
+         questionSelected.optionOne?.votes.length ||
+         0 + questionSelected.optionTwo?.votes.length ||
+         0;
+      const data = users[questionSelected.author];
+
+      return authedUser.answers.hasOwnProperty(question_id) ? (
+         <section className="result">
+            <CardBoxContainer
+               buttonText="Submit"
+               headerSection={this.headerSection(data)}
+               buttonActive={false}
+            >
+               <div className="result__content">
+                  <QuestionResultBox
+                     questionText={questionSelected.optionOne.text}
+                     selectedQuestion={questionSelected.optionOne.votes.includes(
+                        authedUser.id
+                     )}
+                     totalVotes={totalVotes}
+                     votes={questionSelected.optionOne.votes.length}
+                  />
+                  <p>or</p>
+                  <QuestionResultBox
+                     questionText={questionSelected.optionOne.text}
+                     selectedQuestion={questionSelected.optionTwo.votes.includes(
+                        authedUser.id
+                     )}
+                     totalVotes={totalVotes}
+                     votes={questionSelected.optionTwo.votes.length}
+                  />
+               </div>
+            </CardBoxContainer>
+         </section>
+      ) : (
          <section className="question">
             <CardBoxContainer
                buttonText="Submit"
-               headerSection={this.headerSection()}
+               headerSection={this.headerSection(data)}
+               onClick={() => this.handleSubmitAnswer(question_id)}
             >
                <div className="question__content">
                   <QuestionSelectionBox
-                     questionText="find $50 your self?"
-                     selectedButton
+                     questionText={questionSelected.optionOne.text}
+                     onClick={() => this.handleSelectAnswer(1)}
+                     selectedButton={this.state.answerSelected === 1}
                   />
                   <p>or</p>
-                  <QuestionSelectionBox questionText="find $50 your self?" />
+                  <QuestionSelectionBox
+                     questionText={questionSelected.optionTwo.text}
+                     onClick={() => this.handleSelectAnswer(2)}
+                     selectedButton={this.state.answerSelected === 2}
+                  />
                </div>
             </CardBoxContainer>
          </section>
       );
    }
 }
+function mapStateToProps({ questions, authedUser, users }) {
+   return {
+      questions,
+      authedUser,
+      users,
+   };
+}
 
-export default Question;
+export default connect(mapStateToProps)(Question);

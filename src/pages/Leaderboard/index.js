@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import imageProfile from '../../assets/img/profileImage.jpeg';
-
 class Leaderboard extends Component {
    render() {
       return (

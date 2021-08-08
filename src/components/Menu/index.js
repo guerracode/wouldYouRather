@@ -5,7 +5,7 @@ import logo from '../../assets/img/Logo.svg';
 
 const Menu = ({ authedUser, handleLogout }) => {
    const home = useRouteMatch('/');
-   const newQuestion = useRouteMatch('/newQuestion');
+   const add = useRouteMatch('/add');
    const leaderboard = useRouteMatch('/leaderboard');
 
    const changeSelected = (route) => {
@@ -25,7 +25,7 @@ const Menu = ({ authedUser, handleLogout }) => {
                <Link to="/" className={changeSelected(home)}>
                   Home
                </Link>
-               <Link to="/newQuestion" className={changeSelected(newQuestion)}>
+               <Link to="/add" className={changeSelected(add)}>
                   New Question
                </Link>
                <Link to="/leaderboard" className={changeSelected(leaderboard)}>

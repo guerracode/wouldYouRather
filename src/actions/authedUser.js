@@ -17,7 +17,6 @@ export function removeAuthedUser() {
 
 export function handleAuthedUser(user) {
    return (dispatch) => {
-      console.log('USER', user);
       dispatch(showLoading());
       const authedUser = sessionStorage.getItem('user');
 

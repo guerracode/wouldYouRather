@@ -14,6 +14,10 @@ class Home extends Component {
       }));
    };
 
+   handleViewPoll = (id) => {
+      this.props.history.push(`/questions/${id}`);
+   };
+
    render() {
       return (
          <section className="home">
@@ -43,6 +47,7 @@ class Home extends Component {
                      <>
                         {this.props.answeredQuestions.map((question) => (
                            <QuestionHome
+                              onClick={() => this.handleViewPoll(question.id)}
                               key={question.id}
                               data={question}
                               users={this.props.users}
@@ -53,6 +58,7 @@ class Home extends Component {
                      <>
                         {this.props.unansweredQuestions.map((question) => (
                            <QuestionHome
+                              onClick={() => this.handleViewPoll(question.id)}
                               key={question.id}
                               data={question}
                               users={this.props.users}
@@ -87,7 +93,6 @@ function mapStateToProps({ authedUser, questions, users }) {
          return y.timestamp - x.timestamp;
       });
 
-   console.log('---answeredQuestions', answeredQuestions);
    return {
       authedUser,
       answeredQuestions,

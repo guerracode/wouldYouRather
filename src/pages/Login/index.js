@@ -20,13 +20,10 @@ class Login extends Component {
    };
 
    handleChange = (event) => {
-      console.log('== HandleChange', this.props.users);
-      console.log('== HandleChange', this.props.users[event.target.value]);
       this.setState({ user: this.props.users[event.target.value] });
    };
 
    render() {
-      console.log('VALUE', this.state.user);
       return (
          <section className="login">
             <CardBoxContainer

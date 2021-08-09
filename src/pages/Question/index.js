@@ -10,41 +10,70 @@ class Question extends Component {
       answerSelected: 0,
    };
 
-   headerSection = ({ avatarURL, name }) => (
-      <div className="question__header">
-         <figure>
-            <img src={avatarURL} alt="profile" />
-         </figure>
-         <div>
-            <h6>Asked by</h6>
-            <p>{name}</p>
-         </div>
-      </div>
-   );
-
-   handleSelectAnswer = (selected) => {
-      this.setState({
-         answerSelected: selected,
-      });
-   };
-
-   handleSubmitAnswer = (qid) => {
-      this.props.dispatch(
-         handleSaveQuestionAnswer(qid, this.state.answerSelected)
-      );
-   };
-
-   render() {
+   initializeData = () => {
       const { question_id } = this.props.match.params;
-      const { authedUser, questions, users } = this.props;
-
+      const { questions, users } = this.props;
       const questionSelected = questions[question_id];
+
+      if (!questionSelected) {
+         this.props.history.push('/notfound');
+         return;
+      }
+
       const totalVotes =
          questionSelected.optionOne?.votes.length ||
          0 + questionSelected.optionTwo?.votes.length ||
          0;
       const data = users[questionSelected.author];
 
+      this.setState((currentState) => ({
+         ...currentState,
+         questionSelected,
+         totalVotes,
+         data,
+      }));
+   };
+
+   componentDidMount() {
+      this.initializeData();
+   }
+
+   headerSection = (data) => (
+      <div className="question__header">
+         <figure>
+            <img src={data?.avatarURL} alt="profile" />
+         </figure>
+         <div>
+            <h6>Asked by</h6>
+            <p>{data?.name}</p>
+         </div>
+      </div>
+   );
+
+   handleSelectAnswer = (selected) => {
+      console.log('--SELECTED', selected);
+      this.setState((currentState) => ({
+         ...currentState,
+         answerSelected: selected,
+      }));
+   };
+
+   handleSubmitAnswer = (qid) => {
+      this.props
+         .dispatch(handleSaveQuestionAnswer(qid, this.state.answerSelected))
+         .then(() => this.initializeData());
+   };
+
+   render() {
+      const { question_id } = this.props.match.params;
+      const { authedUser } = this.props;
+      const { questionSelected, data, totalVotes } = this.state;
+
+      console.log('===STATE', questionSelected);
+
+      if (!questionSelected) {
+         return <h5>Loading</h5>;
+      }
       return authedUser.answers.hasOwnProperty(question_id) ? (
          <section className="result">
             <CardBoxContainer

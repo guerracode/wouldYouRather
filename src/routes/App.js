@@ -22,7 +22,7 @@ class App extends Component {
          <Route
             {...rest}
             render={(props) => {
-               return this.props.authedUser ? (
+               return this.props.authedUser?.id ? (
                   <Component {...props} />
                ) : (
                   <Redirect
@@ -62,7 +62,7 @@ class App extends Component {
                         exact
                         component={Question}
                      />
-                     <Route component={NotFound} />
+                     <this.PrivateRoute component={NotFound} />
                   </Switch>
                )}
             </Layout>

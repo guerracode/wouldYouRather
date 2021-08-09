@@ -1,14 +1,21 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-const questionResultBox = ({
+const QuestionResultBox = ({
    questionText,
    selectedQuestion = false,
    totalVotes = 0,
    votes = 0,
 }) => {
-   const getPercentage = () => {
-      return Math.round((votes / totalVotes) * 100) || 0;
-   };
+   const [percentage, setPercentage] = useState(0);
+
+   // const getPercentage = (vot, total) => {
+   //    return Math.round((vot / total) * 100) || 0;
+   // };
+
+   useEffect(() => {
+      const result = Math.round((votes / totalVotes) * 100) || 0;
+      setPercentage(result);
+   }, [totalVotes, votes]);
 
    return (
       <article className="questionResultBox">
@@ -37,14 +44,16 @@ const questionResultBox = ({
          <div
             className="questionResultBox__percentage"
             style={{
-               width: `${getPercentage() ? getPercentage() : 18}%`,
-               backgroundColor: `${getPercentage() ? null : 'transparent'}`,
+               width: `${percentage ? percentage : 18}%`,
+               backgroundColor: `${
+                  percentage === 0 ? 'transparent' : '#AB3428'
+               }`,
             }}
          >
-            <p>{getPercentage()}%</p>
+            <p>{percentage}%</p>
          </div>
       </article>
    );
 };
 
-export default questionResultBox;
+export default QuestionResultBox;
